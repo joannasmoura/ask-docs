@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { askQuestion } from '../services/api'
 
 export default function ChatBox({ documentText }) {
   const [question, setQuestion] = useState('')
@@ -7,15 +8,16 @@ export default function ChatBox({ documentText }) {
 
   const handleAsk = async () => {
     setLoading(true)
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/ask`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ documentText, question }),
-    })
-
-    const data = await res.json()
-    setAnswer(data.answer)
-    setLoading(false)
+    
+    try {
+      const data = await askQuestion(documentText, question)
+      setAnswer(data.answer)
+    } catch (error) {
+      console.error('Failed to get answer:', error)
+      // You can add error handling here (e.g., show a toast notification)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
