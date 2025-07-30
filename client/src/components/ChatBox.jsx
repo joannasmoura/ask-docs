@@ -6,6 +6,8 @@ export default function ChatBox({ documentText }) {
   const [loading, setLoading] = useState(false)
 
   const handleAsk = async () => {
+    if (!question.trim()) return
+    
     setLoading(true)
     const res = await fetch(`${import.meta.env.VITE_API_URL}/ask`, {
       method: 'POST',
@@ -19,24 +21,35 @@ export default function ChatBox({ documentText }) {
   }
 
   return (
-    <div className="flex flex-col gap-4 mt-8">
-      <textarea
-        value={question}
-        onChange={(e) => setQuestion(e.target.value)}
-        className="p-2 border border-gray-300 rounded"
-        placeholder="Ask something about the document..."
-        rows={3}
-      />
-      <button
-        onClick={handleAsk}
-        disabled={loading}
-        className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
-      >
-        {loading ? 'Thinking...' : 'Ask'}
-      </button>
+    <div className="space-y-4 mt-6">
+      {/* Question Input */}
+      <div className="relative">
+        <textarea
+          value={question}
+          onChange={(e) => setQuestion(e.target.value)}
+          className="w-full p-4 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 resize-none focus:outline-none focus:border-purple-500 transition-colors"
+          placeholder="Ask something about the document..."
+          rows={3}
+        />
+      </div>
+
+      {/* Ask Button */}
+      <div className="flex justify-end">
+        <button
+          onClick={handleAsk}
+          disabled={loading || !question.trim()}
+          className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        >
+          {loading ? 'Thinking...' : 'Ask'}
+        </button>
+      </div>
+
+      {/* Answer Display */}
       {answer && (
-        <div className="p-4 border rounded bg-gray-50 whitespace-pre-wrap">
-          <strong>Answer:</strong> {answer}
+        <div className="p-4 bg-gray-700 rounded-lg border border-gray-600">
+          <div className="text-white whitespace-pre-wrap">
+            <span className="font-semibold text-purple-300">Answer:</span> {answer}
+          </div>
         </div>
       )}
     </div>
