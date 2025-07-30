@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { uploadFile } from '../services/api'
 
 export default function FileUploader({ onUpload }) {
   const [file, setFile] = useState(null)
@@ -30,15 +31,13 @@ export default function FileUploader({ onUpload }) {
   const handleUpload = async () => {
     if (!file) return
 
-    const formData = new FormData()
-    formData.append('file', file)
-
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/upload`, {
-      method: 'POST',
-      body: formData,
-    })
-    const data = await res.json()
-    onUpload(data.text)
+    try {
+      const data = await uploadFile(file)
+      onUpload(data.text)
+    } catch (error) {
+      console.error('Upload failed:', error)
+      // You can add error handling here (e.g., show a toast notification)
+    }
   }
 
   return (
