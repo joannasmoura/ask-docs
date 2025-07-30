@@ -2,6 +2,8 @@
 
 A modern web application that allows users to upload PDF documents and ask questions about their content using AI-powered natural language processing.
 
+### Live version can be found here: https://ask-docs-76ef5.web.app/
+
 ## 🚀 Features
 
 - **PDF Document Upload**: Upload and process PDF files
@@ -200,6 +202,10 @@ Ask a question about the uploaded document.
 - Frontend runs on `http://localhost:5173`
 - Backend runs on `http://localhost:3001`
 - Check browser console and server logs for debugging
+
+## Deployment
+- **Frontend**: Deployed on Firebase. Visit [Firebase Hosting](https://firebase.google.com/docs/hosting) for more details.
+- **Backend**: Deployed on Render. Visit [Render](https://render.com/) for more details.
 
 ## 📝 License
 
