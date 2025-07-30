@@ -14,7 +14,7 @@ router.post('/', async (req, res) => {
         const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
 
         const response = await openai.chat.completions.create({
-            model: 'gpt-3.5-turbo',
+            model: 'gpt-4.1-nano',
             messages: [
                 { role: 'system', content: 'You are a helpful assistant that answers questions based on a document.' },
                 { role: 'user', content: `Document:\n${documentText}` },
