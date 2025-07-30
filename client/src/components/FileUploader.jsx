@@ -1,9 +1,10 @@
 import { useState } from 'react'
-import { uploadFile } from '../services/api'
+import useUploadHandler from '../hooks/useUploadHandler';
 
-export default function FileUploader({ onUpload }) {
+export default function FileUploader({setDocumentText}) {
   const [file, setFile] = useState(null)
   const [isDragOver, setIsDragOver] = useState(false)
+  const { handleUpload } = useUploadHandler({setDocumentText});
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0])
@@ -25,18 +26,6 @@ export default function FileUploader({ onUpload }) {
     const droppedFile = e.dataTransfer.files[0]
     if (droppedFile && droppedFile.type === 'application/pdf') {
       setFile(droppedFile)
-    }
-  }
-
-  const handleUpload = async () => {
-    if (!file) return
-
-    try {
-      const data = await uploadFile(file)
-      onUpload(data.text)
-    } catch (error) {
-      console.error('Upload failed:', error)
-      // You can add error handling here (e.g., show a toast notification)
     }
   }
 
@@ -87,7 +76,7 @@ export default function FileUploader({ onUpload }) {
         <div className="flex justify-between items-center p-4 bg-gray-700 rounded-lg">
           <span className="text-white text-sm">{file.name}</span>
           <button
-            onClick={handleUpload}
+            onClick={ () => handleUpload(file)}
             className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
           >
             Upload & Extract
